@@ -1,7 +1,7 @@
 # Jazzed up Kaleidoscope
 
 The LLVM website contains a pretty cool 
-(tutorial)[https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/index.html]
+[tutorial](https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/index.html)
 demonstrating how to create a compiler for a toy language they call 
 Kaleidoscope.
 
