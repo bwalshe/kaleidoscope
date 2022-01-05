@@ -13,8 +13,8 @@ class TraversingVisitor : public Visitor {
     void visit(const PrototypeAST&) {}
 
 #define TRAVERSE(CLASS, CODE)                   \
-    virtual void enter(const CLASS &node) {}    \
-    virtual void exit(const CLASS &node) {}     \
+    virtual void enter(const CLASS &) {}    \
+    virtual void exit(const CLASS &) {}     \
     void visit(const CLASS &node) {             \
         enter(node);                            \
         CODE                                    \

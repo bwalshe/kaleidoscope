@@ -5,6 +5,7 @@
 #include <string>
 #include <memory>
 #include <utility>
+#include <iostream>
 
 
 namespace kaleidiscope {
@@ -16,6 +17,14 @@ class Visitor;
 struct ASTNode {
   virtual ~ASTNode() = default;
   virtual void accept(Visitor *visitor) const = 0;
+  virtual bool isEqual(const ASTNode &) const = 0;
+  bool operator==(const ASTNode &other) const {
+      return this == &other || isEqual(other);
+  }
+
+  bool operator!=(const ASTNode &other) const {
+      return !(*this == other);
+  }
 };
 
 
@@ -29,6 +38,8 @@ struct NumberExprAST : public ExprAST {
   explicit NumberExprAST(double Val) : Val(Val) {}
 
   void accept(Visitor *) const override;
+
+  bool isEqual(const ASTNode &) const override;
 };
 
 /// VariableASTNode - Expression class for referencing a variable, like "a".
@@ -38,6 +49,8 @@ struct VariableExprAST : public ExprAST {
   explicit VariableExprAST(const std::string &Name) : Name(Name) {}
 
   void accept(Visitor *) const override;
+
+  bool isEqual(const ASTNode &) const override;
 };
 
 /// BinaryASTNode - Expression class for a binary operator.
@@ -50,6 +63,8 @@ struct BinaryExprAST : public ExprAST {
       : Op(Op), LHS(std::move(LHS)), RHS(std::move(RHS)) {}
 
   void accept(Visitor *) const override;
+
+  bool isEqual(const ASTNode &) const override;
 };
 
 /// CallASTNode - Expression class for function calls.
@@ -63,6 +78,8 @@ struct CallExprAST : public ExprAST {
       : Callee(Callee), Args(std::move(Args)) {}
 
   void accept(Visitor *) const override;
+
+  bool isEqual(const ASTNode &) const override;
 };
 
 /// PrototypeAST - This class represents the "prototype" for a function,
@@ -72,10 +89,12 @@ struct PrototypeAST : public ASTNode {
   const std::string Name;
   const std::vector<std::string> Args;
 
-  PrototypeAST(const std::string &Name, std::vector<std::string> args)
+  PrototypeAST(const std::string &Name, std::vector<std::string> Args)
       : Name(Name), Args(std::move(Args)) {}
 
   void accept(Visitor *) const override;
+
+  bool isEqual(const ASTNode &) const override;
 };
 
 /// FunctionAST - This class represents a function definition itself.
@@ -89,6 +108,8 @@ struct FunctionAST : public ASTNode {
       : Proto(std::move(Proto)), Body(std::move(Body)) {}
 
   void accept(Visitor *) const override;
+
+  bool isEqual(const ASTNode &) const override;
 };
 
 
@@ -101,18 +122,6 @@ class Visitor {
     virtual void visit(const PrototypeAST&) = 0;
     virtual void visit(const FunctionAST&) = 0;
 };
-
-#define ACCEPT(CLASS)                               \
-    void CLASS::accept(Visitor *visitor) const {    \
-        visitor->visit(*this);                      \
-    }                                               \
-
-ACCEPT(NumberExprAST)
-ACCEPT(VariableExprAST)
-ACCEPT(BinaryExprAST)
-ACCEPT(CallExprAST)
-ACCEPT(PrototypeAST)
-ACCEPT(FunctionAST)
 
 }  // namespace kaleidiscope
 #endif  // _KALEIDISCOPE_AST_HPP_
