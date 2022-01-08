@@ -2,7 +2,7 @@
 #include <string>
 
 #include "Lexer.hpp"
-namespace kaleidiscope {
+namespace kaleidoscope {
 
 int Lexer::gettok() {
   // Skip any whitespace.
@@ -52,5 +52,5 @@ int Lexer::gettok() {
   return ThisChar;
 }
 
-}  // end namespace kaleidiscope
+}  // end namespace kaleidoscope
 

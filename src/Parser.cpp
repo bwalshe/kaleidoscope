@@ -3,7 +3,7 @@
 
 #include "Parser.hpp"
 
-namespace kaleidiscope {
+namespace kaleidoscope {
 
 int Parser::GetTokPrecedence() {
     if (!isascii(CurTok))
@@ -201,4 +201,4 @@ std::unique_ptr<PrototypeAST> Parser::ParseExtern() {
   getNextToken();  // eat extern.
   return ParsePrototype();
 }
-}  // end namespace kaleidiscope
+}  // end namespace kaleidoscope

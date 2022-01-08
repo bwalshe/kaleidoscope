@@ -1,5 +1,5 @@
-#ifndef _KALEIDISCOPE_AST_PRINTER_HPP_
-#define _KALEIDISCOPE_AST_PRINTER_HPP_
+#ifndef _KALEIDOSCOPE_AST_PRINTER_HPP_
+#define _KALEIDOSCOPE_AST_PRINTER_HPP_
 
 #include <iostream>
 #include <catch2/catch.hpp>
@@ -8,7 +8,7 @@
 #include "TraversingVisitor.hpp"
 
 
-namespace kaleidiscope {
+namespace kaleidoscope {
 
 
 class ASTPrinter : public TraversingVisitor {
@@ -28,7 +28,7 @@ class ASTPrinter : public TraversingVisitor {
         ++IndentLevel;
     }
 
-    void exit(const kaleidiscope::BinaryExprAST &) {
+    void exit(const kaleidoscope::BinaryExprAST &) {
         --IndentLevel;
     }
 
@@ -70,7 +70,7 @@ class ASTPrinter : public TraversingVisitor {
     explicit ASTPrinter(std::ostream &Out) : IndentLevel(0), Out(Out)  {}
 };
 
-}  // end namespace kaleidiscope
+}  // end namespace kaleidoscope
 
-#endif  //  _KALEIDISCOPE_AST_PRINTER_HPP_
+#endif  //  _KALEIDOSCOPE_AST_PRINTER_HPP_
 

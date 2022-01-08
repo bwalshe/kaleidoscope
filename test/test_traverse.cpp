@@ -8,7 +8,7 @@
 
 namespace {
 
-using namespace kaleidiscope;
+using namespace kaleidoscope;
 
 enum Event {
     ENTER_BINOP,

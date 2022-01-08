@@ -18,7 +18,7 @@ add_compile_options(-Wall -Wextra -pedantic -Werror)
 
 if(PRINT_UNITTEST_TREES)
     message("Unit test trees will be printed to stdout")
-    add_definitions(-DKALEIDISCOPE_TESTS_PRINT_TREES)
+    add_definitions(-DKALEIDOSCOPE_TESTS_PRINT_TREES)
 endif()
 
 find_package(Catch2 REQUIRED)

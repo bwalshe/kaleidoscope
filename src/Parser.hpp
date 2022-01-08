@@ -1,5 +1,5 @@
-#ifndef _KALEIDISCOPE_PARSER_HPP_
-#define _KALEIDISCOPE_PARSER_HPP_
+#ifndef _KALEIDOSCOPE_PARSER_HPP_
+#define _KALEIDOSCOPE_PARSER_HPP_
 
 #include <memory>
 #include <map>
@@ -8,7 +8,7 @@
 #include "Lexer.hpp"
 #include "AST.hpp"
 
-namespace kaleidiscope {
+namespace kaleidoscope {
 
 class Parser {
     std::unique_ptr<Lexer> ActiveLexer;
@@ -83,6 +83,6 @@ class Parser {
     std::unique_ptr<PrototypeAST> ParseExtern();
 };
 
-}  // end namespace kaleidiscope
+}  // end namespace kaleidoscope
 #endif  // _KALEIDOISCOPE_PARSER_HPP_
 

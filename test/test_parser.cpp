@@ -7,7 +7,7 @@
 #include "Parser.hpp"
 #include "ASTPrinter.hpp"
 
-using namespace kaleidiscope;
+using namespace kaleidoscope;
 using ExprPtr = std::unique_ptr<ExprAST>;
 
 #define UNIQUE(TYPE, ...)       \
@@ -19,7 +19,7 @@ void runParseTest(const std::string &text, const ASTNode &expected, F parseFn) {
     Parser parser(UNIQUE(MemoryLexer, text));
     auto result = (parser.*parseFn)();
     REQUIRE(result);
-#ifdef KALEIDISCOPE_TESTS_PRINT_TREES
+#ifdef KALEIDOSCOPE_TESTS_PRINT_TREES
     ASTPrinter printer(std::cout);
     std::cout << '"' << text << "\" parses to:\n";
     result->accept(&printer);

@@ -1,5 +1,5 @@
-#ifndef _KALEIDISCOPE_AST_HPP_
-#define _KALEIDISCOPE_AST_HPP_
+#ifndef _KALEIDOSCOPE_AST_HPP_
+#define _KALEIDOSCOPE_AST_HPP_
 
 #include <vector>
 #include <string>
@@ -8,7 +8,7 @@
 #include <iostream>
 
 
-namespace kaleidiscope {
+namespace kaleidoscope {
 
 
 class Visitor;
@@ -123,6 +123,6 @@ class Visitor {
     virtual void visit(const FunctionAST&) = 0;
 };
 
-}  // namespace kaleidiscope
-#endif  // _KALEIDISCOPE_AST_HPP_
+}  // namespace kaleidoscope
+#endif  // _KALEIDOSCOPE_AST_HPP_
 

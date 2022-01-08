@@ -5,7 +5,7 @@
 
 #include "AST.hpp"
 
-using namespace kaleidiscope;
+using namespace kaleidoscope;
 using NodePtr = std::unique_ptr<ASTNode>;
 using ExprPtr = std::unique_ptr<ExprAST>;
 

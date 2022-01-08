@@ -1,5 +1,5 @@
-#ifndef _KALEIDISCOPE_LEXER_HPP_
-#define _KALEIDISCOPE_LEXER_HPP_
+#ifndef _KALEIDOSCOPE_LEXER_HPP_
+#define _KALEIDOSCOPE_LEXER_HPP_
 
 #include <memory>
 #include <iostream>
@@ -7,7 +7,7 @@
 #include <sstream>
 #include <string>
 
-namespace kaleidiscope {
+namespace kaleidoscope {
 
 // The lexer returns tokens [0-255] if it is an unknown character, otherwise one
 // of these for known things.
@@ -87,6 +87,6 @@ class FileLexer : public Lexer {
     }
 };
 
-}  // end namespace kaleidiscope
-#endif  // _KALEIDISCOPE_LEXER_HPP_
+}  // end namespace kaleidoscope
+#endif  // _KALEIDOSCOPE_LEXER_HPP_
 

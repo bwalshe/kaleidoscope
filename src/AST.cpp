@@ -1,6 +1,6 @@
 #include "AST.hpp"
 
-namespace  kaleidiscope {
+namespace  kaleidoscope {
 #define ACCEPT(CLASS)                               \
     void CLASS::accept(Visitor *visitor) const {    \
         visitor->visit(*this);                      \
@@ -38,5 +38,5 @@ EQUALITY(PrototypeAST, Name == other->Name && Args == other->Args)
 
 ACCEPT(FunctionAST)
 EQUALITY(FunctionAST, *Proto == *other->Proto && *Body == *other->Body)
-}  // end namespace kaleidiscope
+}  // end namespace kaleidoscope
 

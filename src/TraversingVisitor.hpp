@@ -1,9 +1,9 @@
-#ifndef _KALEIDISCOPE_TRAVERSING_VISITOR_HPP_
-#define _KALEIDISCOPE_TRAVERSING_VISITOR_HPP_
+#ifndef _KALEIDOSCOPE_TRAVERSING_VISITOR_HPP_
+#define _KALEIDOSCOPE_TRAVERSING_VISITOR_HPP_
 
 #include "AST.hpp"
 
-namespace kaleidiscope {
+namespace kaleidoscope {
 
 class TraversingVisitor : public Visitor {
     void visit(const NumberExprAST&) {}
@@ -37,6 +37,6 @@ TRAVERSE(FunctionAST, {
     node.Body->accept(this);
 })
 };
-}  // namespace kaleidiscope
-#endif  // _KALEIDISCOPE_TRAVERSING_VISITOR_HPP_
+}  // namespace kaleidoscope
+#endif  // _KALEIDOSCOPE_TRAVERSING_VISITOR_HPP_
 

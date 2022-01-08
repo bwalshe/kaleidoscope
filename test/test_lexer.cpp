@@ -4,34 +4,34 @@
 
 
 TEST_CASE("Lexer reads int") {
-    kaleidiscope::MemoryLexer lexer(" 1000 ");
-    REQUIRE(lexer.gettok() == kaleidiscope::tok_number);
+    kaleidoscope::MemoryLexer lexer(" 1000 ");
+    REQUIRE(lexer.gettok() == kaleidoscope::tok_number);
     REQUIRE(lexer.getNumVal() == 1000);
 }
 
 TEST_CASE("Lexer reads def") {
-    kaleidiscope::MemoryLexer lexer(" def ");
-    REQUIRE(lexer.gettok() == kaleidiscope::tok_def);
+    kaleidoscope::MemoryLexer lexer(" def ");
+    REQUIRE(lexer.gettok() == kaleidoscope::tok_def);
 }
 
 TEST_CASE("Lexer reads extern") {
-    kaleidiscope::MemoryLexer lexer(" extern ");
-    REQUIRE(lexer.gettok() == kaleidiscope::tok_extern);
+    kaleidoscope::MemoryLexer lexer(" extern ");
+    REQUIRE(lexer.gettok() == kaleidoscope::tok_extern);
 }
 
 TEST_CASE("Lexer reads id") {
-    kaleidiscope::MemoryLexer lexer(" foo ");
-    REQUIRE(lexer.gettok() == kaleidiscope::tok_identifier);
+    kaleidoscope::MemoryLexer lexer(" foo ");
+    REQUIRE(lexer.gettok() == kaleidoscope::tok_identifier);
     REQUIRE(lexer.getIdentifierStr() == "foo");
 }
 
 TEST_CASE("Lexer reads multiple tokens") {
-    kaleidiscope::MemoryLexer lexer(" def foo extern 1");
-    REQUIRE(lexer.gettok() == kaleidiscope::tok_def);
-    REQUIRE(lexer.gettok() == kaleidiscope::tok_identifier);
+    kaleidoscope::MemoryLexer lexer(" def foo extern 1");
+    REQUIRE(lexer.gettok() == kaleidoscope::tok_def);
+    REQUIRE(lexer.gettok() == kaleidoscope::tok_identifier);
     REQUIRE(lexer.getIdentifierStr() == "foo");
-    REQUIRE(lexer.gettok() == kaleidiscope::tok_extern);
-    REQUIRE(lexer.gettok() == kaleidiscope::tok_number);
+    REQUIRE(lexer.gettok() == kaleidoscope::tok_extern);
+    REQUIRE(lexer.gettok() == kaleidoscope::tok_number);
     REQUIRE(lexer.getNumVal() == 1);
 }
 
