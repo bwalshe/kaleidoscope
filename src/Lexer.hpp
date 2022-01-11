@@ -6,6 +6,8 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <cstdio>
+
 
 namespace kaleidoscope {
 
@@ -20,7 +22,9 @@ enum Token {
 
   // primary
   tok_identifier = -4,
-  tok_number = -5
+  tok_number = -5,
+
+  tok_uninitialised = -6
 };
 
 class Lexer {
@@ -49,9 +53,7 @@ class Lexer {
 
 class StdInLexer : public Lexer {
     char nextChar() {
-        char c;
-        std::cin >> c;
-        return c;
+        return getchar();
     }
 };
 

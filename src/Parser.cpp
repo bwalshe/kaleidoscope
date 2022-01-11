@@ -201,4 +201,27 @@ std::unique_ptr<PrototypeAST> Parser::ParseExtern() {
   getNextToken();  // eat extern.
   return ParsePrototype();
 }
+
+/// get the hext non-trivial top level node where
+/// top ::= definition | external | expression | ;
+std::unique_ptr<ASTNode> Parser::NextTopLevelASTNode() {
+    //if (CurTok == tok_uninitialised) {
+    getNextToken();
+    //}
+    while (true) {
+        switch (CurTok) {
+            case tok_eof:
+                return nullptr;
+            case ';': // ignore top-level semicolons.
+                getNextToken();
+                break;
+            case tok_def:
+                return ParseDefinition();
+            case tok_extern:
+                return ParseExtern();
+            default:
+                return ParseTopLevelExpr();
+        }
+    }
+}
 }  // end namespace kaleidoscope

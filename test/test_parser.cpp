@@ -14,10 +14,9 @@ using ExprPtr = std::unique_ptr<ExprAST>;
     std::make_unique<TYPE>(__VA_ARGS__) \
 
 
-template <typename F>
-void runParseTest(const std::string &text, const ASTNode &expected, F parseFn) {                       \
+void runParseTest(const std::string &text, const ASTNode &expected) {                       \
     Parser parser(UNIQUE(MemoryLexer, text));
-    auto result = (parser.*parseFn)();
+    auto result = parser.NextTopLevelASTNode();
     REQUIRE(result);
 #ifdef KALEIDOSCOPE_TESTS_PRINT_TREES
     ASTPrinter printer(std::cout);
@@ -28,43 +27,43 @@ void runParseTest(const std::string &text, const ASTNode &expected, F parseFn) {
     REQUIRE(*result == expected);
 }                                                   
 
+FunctionAST anonFn(std::unique_ptr<ExprAST> &&exp) {
+    auto prototype = std::make_unique<PrototypeAST>(Parser::ANON_FUNCTION_NAME,
+            std::vector<std::string>());
+    return FunctionAST(std::move(prototype), std::move(exp));
+}
 TEST_CASE("Parse number expression") {
-    runParseTest("1", NumberExprAST(1.0), &Parser::ParseExpression);
+
+    runParseTest("1", anonFn(std::make_unique<NumberExprAST>(1.0)));
 }
 
 TEST_CASE("Parse identifier expression") {
-    runParseTest("a", VariableExprAST("a"), &Parser::ParseExpression);
+    runParseTest("a", anonFn(std::make_unique<VariableExprAST>("a")));
 }
 
 TEST_CASE("Parse parenthesized expression") {
-    BinaryExprAST expected('+', UNIQUE(NumberExprAST, 1), UNIQUE(NumberExprAST, 2));
-    runParseTest("(1 + 2)", expected, &Parser::ParseExpression);
+    auto expected = std::make_unique<BinaryExprAST>('+',
+            UNIQUE(NumberExprAST, 1),
+            UNIQUE(NumberExprAST, 2));
+    runParseTest("(1 + 2)", anonFn(std::move(expected)));
 }
 
 TEST_CASE("Parse call expression") {
     std::vector<ExprPtr> args;
     args.push_back(UNIQUE(NumberExprAST, 1));
     args.push_back(UNIQUE(NumberExprAST, 2));
-    CallExprAST expected("f", std::move(args));
-    runParseTest("f(1, 2)", expected, &Parser::ParseExpression);
+    auto expected = std::make_unique<CallExprAST>("f", std::move(args));
+    runParseTest("f(1, 2)", anonFn(std::move(expected)));
 }
 
 TEST_CASE("Parse extern") {
-    runParseTest("extern f(a b)", PrototypeAST("f", std::vector<std::string>{"a", "b"}), &Parser::ParseExtern);
-}
-
-
-TEST_CASE("Parse anon function") {
-    auto proto = UNIQUE(PrototypeAST, Parser::ANON_FUNCTION_NAME, std::vector<std::string>());
-    auto body = UNIQUE(NumberExprAST, 1);
-
-    runParseTest("1", FunctionAST(std::move(proto),std::move(body)), &Parser::ParseTopLevelExpr);
+    runParseTest("extern f(a b)", PrototypeAST("f", std::vector<std::string>{"a", "b"}));
 }
 
 TEST_CASE("Parse function declaration") {
     auto proto = UNIQUE(PrototypeAST, "f", std::vector<std::string>{"a", "b"});
     auto body = UNIQUE(NumberExprAST, 1);
 
-    runParseTest("def f(a b) 1", FunctionAST(std::move(proto),std::move(body)), &Parser::ParseDefinition);
+    runParseTest("def f(a b) 1", FunctionAST(std::move(proto),std::move(body)));
 }
 

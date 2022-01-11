@@ -15,6 +15,34 @@ class Parser {
     int CurTok;
     int getNextToken() { return CurTok = ActiveLexer->gettok(); }
 
+    /// identifierexpr
+    ///   ::= identifier
+    ///   ::= identifier '(' expression* ')'
+    std::unique_ptr<ExprAST> ParseIdentifierExpr();
+
+    /// primary
+    ///   ::= identifierexpr
+    ///   ::= numberexpr
+    ///   ::= parenexpr
+    std::unique_ptr<ExprAST> ParsePrimary();
+
+    /// expression
+    ///   ::= primary binoprhs
+    ///
+    std::unique_ptr<ExprAST> ParseExpression();
+
+    /// prototype
+    ///   ::= id '(' id* ')'
+    std::unique_ptr<PrototypeAST> ParsePrototype();
+
+    /// definition ::= 'def' prototype expression
+    std::unique_ptr<FunctionAST> ParseDefinition();
+
+    /// toplevelexpr ::= expression
+    std::unique_ptr<FunctionAST> ParseTopLevelExpr();
+
+    /// external ::= 'extern' prototype
+    std::unique_ptr<PrototypeAST> ParseExtern();
 
     /// BinopPrecedence - This holds the precedence for each binary operator
     /// that is defined.
@@ -45,42 +73,18 @@ class Parser {
     static constexpr const char* ANON_FUNCTION_NAME = "__anon_expr";
 
     explicit Parser(std::unique_ptr<Lexer> lexer)
-        : ActiveLexer(std::move(lexer)) {
+        : ActiveLexer(std::move(lexer)), CurTok(tok_uninitialised) {
         BinopPrecedence['<'] = 10;
         BinopPrecedence['+'] = 20;
         BinopPrecedence['-'] = 20;
         BinopPrecedence['*'] = 40;
-        CurTok = ActiveLexer->gettok();
+        //CurTok = ActiveLexer->gettok();
     }
 
-    /// identifierexpr
-    ///   ::= identifier
-    ///   ::= identifier '(' expression* ')'
-    std::unique_ptr<ExprAST> ParseIdentifierExpr();
 
-    /// primary
-    ///   ::= identifierexpr
-    ///   ::= numberexpr
-    ///   ::= parenexpr
-    std::unique_ptr<ExprAST> ParsePrimary();
-
-    /// expression
-    ///   ::= primary binoprhs
-    ///
-    std::unique_ptr<ExprAST> ParseExpression();
-
-    /// prototype
-    ///   ::= id '(' id* ')'
-    std::unique_ptr<PrototypeAST> ParsePrototype();
-
-    /// definition ::= 'def' prototype expression
-    std::unique_ptr<FunctionAST> ParseDefinition();
-
-    /// toplevelexpr ::= expression
-    std::unique_ptr<FunctionAST> ParseTopLevelExpr();
-
-    /// external ::= 'extern' prototype
-    std::unique_ptr<PrototypeAST> ParseExtern();
+    /// get the hext non-trivial top level node where
+    /// top ::= definition | external | expression | ;
+    std::unique_ptr<ASTNode> NextTopLevelASTNode();
 };
 
 }  // end namespace kaleidoscope
