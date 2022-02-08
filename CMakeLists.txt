@@ -23,7 +23,7 @@ if(PRINT_UNITTEST_TREES)
 endif()
 
 
-find_package(LLVM REQUIRED CONFIG)
+find_package(LLVM 13.0.0 REQUIRED CONFIG)
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 include_directories(${LLVM_INCLUDE_DIRS})
 separate_arguments(LLVM_DEFINITIONS_LIST NATIVE_COMMAND ${LLVM_DEFINITIONS})

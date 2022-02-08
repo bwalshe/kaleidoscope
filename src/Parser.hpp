@@ -4,11 +4,22 @@
 #include <memory>
 #include <map>
 #include <utility>
+#include <exception>
 
 #include "Lexer.hpp"
 #include "AST.hpp"
 
 namespace kaleidoscope {
+
+class ParseException : public std::exception {
+    const char* Msg;
+ public:
+     ParseException(const char* msg) : Msg(msg) {}
+
+     const char* what() const throw() {
+         return Msg;
+     }
+};
 
 class Parser {
     std::unique_ptr<Lexer> ActiveLexer;
@@ -51,11 +62,6 @@ class Parser {
     /// GetTokPrecedence - Get the precedence of the pending binary operator
     /// token.
     int GetTokPrecedence();
-
-    /// LogError* - These are little helper functions for error handling.
-    std::unique_ptr<ExprAST> LogError(const char *Str);
-
-    std::unique_ptr<PrototypeAST> LogErrorP(const char *Str);
 
     /// numberexpr ::= number
     std::unique_ptr<ExprAST> ParseNumberExpr();

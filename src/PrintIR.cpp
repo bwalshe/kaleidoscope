@@ -25,9 +25,15 @@ int main(int argc, char **argv) {
 
         ast->accept(&codegen);
 
-        std::cout << "IR:\n";
-        codegen.getFunction()->print(llvm::outs());
-        std::cout << std::endl;
+
+        if(auto *f = codegen.getFunction()) {
+            std::cout << "IR:\n";
+            f->print(llvm::outs());
+            if(CodeGenVisitor::isAnon(f)) {
+                codegen.getFunction()->eraseFromParent();
+            }
+            std::cout << std::endl;
+        }
 
         std::cout << "Ready> "; 
     }

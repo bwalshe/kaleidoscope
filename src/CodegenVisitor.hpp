@@ -27,12 +27,14 @@ namespace kaleidoscope {
 
 
 class CodeGenVisitor : public TraversingVisitor {
+    static constexpr llvm::StringRef ANON{"anon"};
     llvm::LLVMContext &TheContext;
     llvm::Module *TheModule;
     std::unique_ptr<llvm::IRBuilder<>> Builder;
     std::map<std::string, llvm::Value*> NamedValues;
     std::stack<llvm::Value *> ValueStack;
     llvm::Function *OutputFunction;
+
 
  public:
     explicit CodeGenVisitor(llvm::Module *module) :
@@ -53,8 +55,12 @@ class CodeGenVisitor : public TraversingVisitor {
     
     void visit(const FunctionAST &fn) override;
 
-    inline llvm::Function const *getFunction() const {
+    inline llvm::Function *getFunction() {
         return OutputFunction;
+    }
+
+    static inline bool isAnon(llvm::Function const *fn) {
+        return fn->hasFnAttribute(ANON);
     }
 };
 }  // end namespace kaleidoscope

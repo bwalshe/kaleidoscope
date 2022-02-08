@@ -37,16 +37,16 @@ TEST_CASE("Generate Function IR") {
     llvm::Module module("test", context);
     CodeGenVisitor generator(&module);
     FunctionAST fn(
-            std::make_unique<PrototypeAST>("f", std::vector<std::string>{"a", "b"}),
+            std::make_unique<PrototypeAST>("f", std::vector<std::string>{"a"}),
             std::make_unique<BinaryExprAST>(
                 '+',
                 std::make_unique<VariableExprAST>("a"),
-                std::make_unique<NumberExprAST>(1.0)));
+                std::make_unique<NumberExprAST>(1)));
 
     fn.accept(&generator);
     auto *fnIR = generator.getFunction();
     REQUIRE(fnIR != nullptr);
-    REQUIRE(fnIR->arg_size() == 2);
+    REQUIRE(fnIR->arg_size() == 1);
     REQUIRE(fnIR->getReturnType()->isDoubleTy());
     REQUIRE(fnIR->getValueName()->first() == "f");
     REQUIRE(fnIR->getBasicBlockList().size() > 0);

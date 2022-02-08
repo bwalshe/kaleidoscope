@@ -16,17 +16,6 @@ int Parser::GetTokPrecedence() {
     return TokPrec;
 }
 
-/// LogError* - These are little helper functions for error handling.
-std::unique_ptr<ExprAST> Parser::LogError(const char *Str) {
-    fprintf(stderr, "Error: %s\n", Str);
-    return nullptr;
-}
-
-std::unique_ptr<PrototypeAST> Parser::LogErrorP(const char *Str) {
-    LogError(Str);
-    return nullptr;
-}
-
 
 /// numberexpr ::= number
 std::unique_ptr<ExprAST> Parser::ParseNumberExpr() {
@@ -43,7 +32,7 @@ std::unique_ptr<ExprAST> Parser::ParseParenExpr() {
     return nullptr;
 
   if (CurTok != ')')
-    return LogError("expected ')'");
+    throw ParseException("expected ')'");
   getNextToken();  // eat ).
   return V;
 }
@@ -73,7 +62,7 @@ std::unique_ptr<ExprAST> Parser::ParseIdentifierExpr() {
         break;
 
       if (CurTok != ',')
-        return LogError("Expected ')' or ',' in argument list");
+        throw ParseException("Expected ')' or ',' in argument list");
       getNextToken();
     }
   }
@@ -91,7 +80,7 @@ std::unique_ptr<ExprAST> Parser::ParseIdentifierExpr() {
 std::unique_ptr<ExprAST> Parser::ParsePrimary() {
   switch (CurTok) {
   default:
-    return LogError("unknown token when expecting an expression");
+    throw ParseException("unknown token when expecting an expression");
   case tok_identifier:
     return ParseIdentifierExpr();
   case tok_number:
@@ -153,19 +142,19 @@ std::unique_ptr<ExprAST> Parser::ParseExpression() {
 ///   ::= id '(' id* ')'
 std::unique_ptr<PrototypeAST> Parser::ParsePrototype() {
   if (CurTok != tok_identifier)
-    return LogErrorP("Expected function name in prototype");
+    throw ParseException("Expected function name in prototype");
 
   std::string FnName = ActiveLexer->getIdentifierStr();
   getNextToken();
 
   if (CurTok != '(')
-    return LogErrorP("Expected '(' in prototype");
+    throw ParseException("Expected '(' in prototype");
 
   std::vector<std::string> ArgNames;
   while (getNextToken() == tok_identifier)
     ArgNames.push_back(ActiveLexer->getIdentifierStr());
   if (CurTok != ')')
-    return LogErrorP("Expected ')' in prototype");
+    throw ParseException("Expected ')' in prototype");
 
   // success.
   getNextToken();  // eat ')'.
@@ -191,7 +180,7 @@ std::unique_ptr<FunctionAST> Parser::ParseTopLevelExpr() {
     // Make an anonymous proto.
     auto Proto = std::make_unique<PrototypeAST>(ANON_FUNCTION_NAME,
                                                 std::vector<std::string>());
-    return std::make_unique<FunctionAST>(std::move(Proto), std::move(E));
+    return std::make_unique<FunctionAST>(std::move(Proto), std::move(E), true);
   }
   return nullptr;
 }

@@ -101,11 +101,12 @@ struct PrototypeAST : public ASTNode {
 struct FunctionAST : public ASTNode {
   const std::unique_ptr<PrototypeAST> Proto;
   const std::unique_ptr<ExprAST> Body;
+  const bool IsAnonymous;
 
   FunctionAST(std::unique_ptr<PrototypeAST> Proto,
-              std::unique_ptr<ExprAST> Body)
-
-      : Proto(std::move(Proto)), Body(std::move(Body)) {}
+              std::unique_ptr<ExprAST> Body,
+              bool IsAnonymous=false)
+      : Proto(std::move(Proto)), Body(std::move(Body)), IsAnonymous(IsAnonymous) {}
 
   void accept(Visitor *) const override;
 

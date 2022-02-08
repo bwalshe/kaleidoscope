@@ -125,9 +125,11 @@ void CodeGenVisitor::visit(const FunctionAST &fn) {
         // Finish off the function.
         Builder->CreateRet(RetVal);
 
+        if(fn.IsAnonymous){
+            TheFunction->addFnAttr(ANON);
+        }
         // Validate the generated code, checking for consistency.
         verifyFunction(*TheFunction);
-
         OutputFunction = TheFunction;
         return;
     }
